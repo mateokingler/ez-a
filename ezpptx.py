@@ -17,6 +17,7 @@ from pptx.shapes.group import GroupShape
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pptx.enum.shapes import PP_PLACEHOLDER
 
+
 pptxfldr = ""
 
 _nsmap["adec"] = "http://schemas.microsoft.com/office/drawing/2017/decorative"

@@ -18,14 +18,26 @@ import pathlib
 import shutil
 import ezpptx
 import subprocess
+import webbrowser
+import requests
+import win32api
+import threading
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QApplication, QWidget, QFileDialog, QTextEdit, QPushButton, QLabel, QVBoxLayout)
+from updatemanager import Ui_Form
 
 global folder_path
 global save_path
 
 
 class Ui_Dialog(object):
+    def update_manager_win(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Form()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(700, 1000)
@@ -56,7 +68,7 @@ class Ui_Dialog(object):
         self.logoheader.setMaximumSize(QtCore.QSize(430, 140))
         self.logoheader.setStyleSheet("QLabel\n"
 "{\n"
-"    padding-bottom: 10px;\n"
+"    padding-bottom: 30px;\n"
 "}")
         self.logoheader.setText("")
         self.logoheader.setPixmap(QtGui.QPixmap(":/imgs/logo-header.png"))
@@ -64,18 +76,29 @@ class Ui_Dialog(object):
         self.logoheader.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.logoheader.setObjectName("logoheader")
         self.verticalLayout_3.addWidget(self.logoheader, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
-        self.version_label = QtWidgets.QLabel(Dialog)
-        self.version_label.setMinimumSize(QtCore.QSize(678, 40))
-        self.version_label.setMaximumSize(QtCore.QSize(678, 40))
-        self.version_label.setStyleSheet("QLabel\n"
+        self.check_for_updates = QtWidgets.QPushButton(Dialog)
+        self.check_for_updates.setMinimumSize(QtCore.QSize(250, 35))
+        self.check_for_updates.setMaximumSize(QtCore.QSize(250, 35))
+        self.check_for_updates.setStyleSheet("QPushButton\n"
 "{\n"
+"    background-color: white;\n"
+"    color: #081e3f;\n"
 "    font-family: Verdana;\n"
-"    color: white;\n"
 "    font-size: 15px;\n"
-"    margin-left: 70%;\n"
+"    font-weight: bold;\n"
+"    margin-left: 75%;\n"
 "}")
-        self.version_label.setObjectName("version_label")
-        self.verticalLayout_3.addWidget(self.version_label, 0, QtCore.Qt.AlignTop)
+        self.check_for_updates.setObjectName("check_for_updates")
+        self.check_for_updates.clicked.connect(self.update_manager_win)
+        self.verticalLayout_3.addWidget(self.check_for_updates)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.verticalLayout_3.addLayout(self.horizontalLayout_2)
+        self.frame_2 = QtWidgets.QFrame(Dialog)
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.verticalLayout_3.addWidget(self.frame_2)
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setMinimumSize(QtCore.QSize(678, 20))
         self.label.setMaximumSize(QtCore.QSize(678, 20))
@@ -369,7 +392,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "EZ Accessibility"))
-        self.version_label.setText(_translate("Dialog", "v1.0.0"))
+        self.check_for_updates.setText(_translate("Dialog", "Check for Updates"))
         self.label.setText(_translate("Dialog", "How to use:"))
         self.howtouse.setText(_translate("Dialog", "EZ Accessibility is a tool that compiles inaccessible PowerPoint images into a tabular .docx report. Please select a folder containing .pptx files and a location to save the report."))
         self.input_label.setText(_translate("Dialog", "Input:"))
@@ -461,6 +484,8 @@ class Ui_Dialog(object):
     def update_status(self, filename):
         self.processed_edit.setText("Processing: " + filename)
         QApplication.processEvents()
+
+
 
 import eza_imgs
 

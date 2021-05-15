@@ -93,7 +93,6 @@ def extract_shape(shape, pptxfldr):
         n += 1
         with open(pptxfldr + "/tmp/" + image_filename, 'wb') as f:
             f.write(image_bytes)
-
     else:
         group_text.append("")
         img_paths.append("")
@@ -114,8 +113,18 @@ def valid_shape_type(shape):
             return False
     elif shape.shape_type == MSO_SHAPE_TYPE.GROUP:
         return True
-    else:
+    elif shape.shape_type == MSO_SHAPE_TYPE.CHART:
         return True
+    elif shape.shape_type == MSO_SHAPE_TYPE.DIAGRAM:
+        return True
+    elif shape.shape_type == MSO_SHAPE_TYPE.TABLE:
+        return True
+    elif shape.shape_type == MSO_SHAPE_TYPE.MEDIA:
+        return True
+    elif shape.shape_type == MSO_SHAPE_TYPE.WEB_VIDEO:
+        return True
+    else:
+        return False
 
 def is_decorative(shape):
     cNvPr = shape._element._nvXxPr.cNvPr

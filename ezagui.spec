@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['ezagui.py'],
+a = Analysis(['ezagui.py','updatemanager.py'],
              pathex=['C:\\Users\\matia\\Desktop\\EZA Demo\\src\\src'],
              binaries=[],
              datas=[],
@@ -30,4 +30,5 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False , icon='eza.ico')
+          console=True ,
+          icon='C:/Users/matia/Desktop/EZA Demo/src/src/eza.ico')

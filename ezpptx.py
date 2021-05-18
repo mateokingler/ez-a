@@ -48,10 +48,7 @@ def extract_group_txt(groupshape, grptxt):
         if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
             grptxt = extract_group_txt(shape.shapes, grptxt)
         else:
-            if hasattr(shape, "text"):
-                grptxt += shape.text + " "
-            else:
-                grptxt += ""
+            grptxt += shape.text + " " if hasattr(shape, "text") else ""
     return grptxt
 
 def extract_group_img(groupshape, group_img_paths, pptxfldr):
@@ -82,35 +79,27 @@ def extract_shape(shape, pptxfldr):
         grptxt = extract_group_txt(shape.shapes, grptxt)
         group_text.append(grptxt)
         img_paths.append(group_img_paths)
-        n += 1
-
     elif shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
         group_text.append("")
         image = shape.image
         image_bytes = image.blob
         image_filename = 'image{:04d}.{}'.format(n, image.ext)
         img_paths.append(image_filename)
-        n += 1
         with open(pptxfldr + "/tmp/" + image_filename, 'wb') as f:
             f.write(image_bytes)
     else:
         group_text.append("")
         img_paths.append("")
-        n += 1
+
+    n += 1
 
 
 # Function obsolete, implement into extract_shape
 def valid_shape_type(shape):
     if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
-        if ".jpg" or ".png" in picture.name:
-            return True
-        else:
-            return False
+        return True
     elif shape.shape_type == MSO_SHAPE_TYPE.PLACEHOLDER:
-        if shape.placeholder_format.type == PP_PLACEHOLDER.OBJECT:
-            return False
-        else:
-            return False
+        return False
     elif shape.shape_type == MSO_SHAPE_TYPE.GROUP:
         return True
     elif shape.shape_type == MSO_SHAPE_TYPE.CHART:
@@ -134,13 +123,12 @@ def is_decorative(shape):
 
 # Remove unnecessary elses (if applicable), check if you can use None instead of 0
 def has_alt_text(shape):
-    autoDesc = "Description automatically generated"
     if shape.alt_text:
-        if autoDesc in shape.alt_text:
-            auto_desc_txts.append(shape.alt_text)
-            return False
-        else:
+        autoDesc = "Description automatically generated"
+        if autoDesc not in shape.alt_text:
             return True
+        auto_desc_txts.append(shape.alt_text)
+        return False
     else:
         auto_desc_txts.append("")
 
@@ -150,7 +138,7 @@ def keep_table_on_one_page(document):
     """
     tags = document.element.xpath('//w:tr')
     rows = len(tags)
-    for row in range(0, rows):
+    for row in range(rows):
         tag = tags[row]  # Specify which <w:r> tag you want
         child = OxmlElement('w:cantSplit')  # Create arbitrary tag
         tag.append(child)  # Append in the new tag
@@ -282,7 +270,7 @@ def iter_files(pptxfldr, update_status):
         if filename.endswith(".pptx"):
             filename = filename.replace("~$", "")
             update_status(filename)
-            for picture in check_file_accessibility(Presentation(pptxfldr + "/" + filename), pptxfldr):
+            for _ in check_file_accessibility(Presentation(pptxfldr + "/" + filename), pptxfldr):
                 continue
             pptxfldr = pptxfldr
             print(img_names)

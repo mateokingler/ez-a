@@ -32,12 +32,11 @@ class Ui_Form(object):
                 self.update_notifier.setText("There is a new version of EZ-A available! " + "Version: " + data)
                 self.update_button.setText("Update Now")
                 self.update_button.setEnabled(True)
-                QApplication.processEvents()
             else:
                 self.update_notifier.setText("Congrats! You have the latest version of EZ-A! " + "Version: " + VERSION)
                 self.update_button.setText("No Update Available")
                 self.update_button.setEnabled(False)
-                QApplication.processEvents()
+            QApplication.processEvents()
         except Exception as e:
             self.update_notifier.setText("Error downloading latest update")
             QApplication.processEvents()

@@ -9,6 +9,7 @@
 
 
 import sys
+
 sys.dont_write_bytecode = True
 import os
 import os.path
@@ -23,7 +24,15 @@ import requests
 import win32api
 import threading
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import (QApplication, QWidget, QFileDialog, QTextEdit, QPushButton, QLabel, QVBoxLayout)
+from PyQt5.QtWidgets import (
+    QApplication,
+    QWidget,
+    QFileDialog,
+    QTextEdit,
+    QPushButton,
+    QLabel,
+    QVBoxLayout,
+)
 from updatemanager import Ui_Form
 
 global folder_path
@@ -37,19 +46,17 @@ class Ui_Dialog(object):
         self.ui.setupUi(self.window)
         self.window.show()
 
-
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(700, 1000)
         Dialog.setMinimumSize(QtCore.QSize(700, 1000))
         Dialog.setMaximumSize(QtCore.QSize(700, 1000))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/imgs/eza.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(
+            QtGui.QPixmap(":/imgs/eza.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
         Dialog.setWindowIcon(icon)
-        Dialog.setStyleSheet("QDialog\n"
-"{\n"
-"    background-color: #081e3f ;\n"
-"}")
+        Dialog.setStyleSheet("QDialog\n" "{\n" "    background-color: #081e3f ;\n" "}")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
@@ -59,35 +66,40 @@ class Ui_Dialog(object):
         self.verticalLayout_3.setSpacing(6)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.logoheader = QtWidgets.QLabel(Dialog)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.logoheader.sizePolicy().hasHeightForWidth())
         self.logoheader.setSizePolicy(sizePolicy)
         self.logoheader.setMinimumSize(QtCore.QSize(430, 140))
         self.logoheader.setMaximumSize(QtCore.QSize(430, 140))
-        self.logoheader.setStyleSheet("QLabel\n"
-"{\n"
-"    padding-bottom: 30px;\n"
-"}")
+        self.logoheader.setStyleSheet(
+            "QLabel\n" "{\n" "    padding-bottom: 30px;\n" "}"
+        )
         self.logoheader.setText("")
         self.logoheader.setPixmap(QtGui.QPixmap(":/imgs/logo-header.png"))
         self.logoheader.setScaledContents(True)
-        self.logoheader.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.logoheader.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.logoheader.setObjectName("logoheader")
-        self.verticalLayout_3.addWidget(self.logoheader, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.verticalLayout_3.addWidget(
+            self.logoheader, 0, QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop
+        )
         self.check_for_updates = QtWidgets.QPushButton(Dialog)
         self.check_for_updates.setMinimumSize(QtCore.QSize(250, 35))
         self.check_for_updates.setMaximumSize(QtCore.QSize(250, 35))
-        self.check_for_updates.setStyleSheet("QPushButton\n"
-"{\n"
-"    background-color: white;\n"
-"    color: #081e3f;\n"
-"    font-family: Verdana;\n"
-"    font-size: 15px;\n"
-"    font-weight: bold;\n"
-"    margin-left: 75%;\n"
-"}")
+        self.check_for_updates.setStyleSheet(
+            "QPushButton\n"
+            "{\n"
+            "    background-color: white;\n"
+            "    color: #081e3f;\n"
+            "    font-family: Verdana;\n"
+            "    font-size: 15px;\n"
+            "    font-weight: bold;\n"
+            "    margin-left: 75%;\n"
+            "}"
+        )
         self.check_for_updates.setObjectName("check_for_updates")
         self.check_for_updates.clicked.connect(self.update_manager_win)
         self.verticalLayout_3.addWidget(self.check_for_updates)
@@ -102,14 +114,16 @@ class Ui_Dialog(object):
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setMinimumSize(QtCore.QSize(678, 20))
         self.label.setMaximumSize(QtCore.QSize(678, 20))
-        self.label.setStyleSheet("QLabel\n"
-"{\n"
-"    margin-left: 67%;\n"
-"    font-family: Verdana;\n"
-"    font-size: 24px;\n"
-"    color: white;\n"
-"    font-weight: bold;\n"
-"}")
+        self.label.setStyleSheet(
+            "QLabel\n"
+            "{\n"
+            "    margin-left: 67%;\n"
+            "    font-family: Verdana;\n"
+            "    font-size: 24px;\n"
+            "    color: white;\n"
+            "    font-weight: bold;\n"
+            "}"
+        )
         self.label.setObjectName("label")
         self.verticalLayout_3.addWidget(self.label, 0, QtCore.Qt.AlignBottom)
         self.howtouse = QtWidgets.QLabel(Dialog)
@@ -119,15 +133,19 @@ class Ui_Dialog(object):
         font.setFamily("Verdana")
         font.setPointSize(-1)
         self.howtouse.setFont(font)
-        self.howtouse.setStyleSheet("QLabel\n"
-"{\n"
-"    margin-left: 70%;\n"
-"    margin-right: 70%;\n"
-"    font-family: Verdana;\n"
-"    font-size: 19px;\n"
-"    color: white;\n"
-"}")
-        self.howtouse.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.howtouse.setStyleSheet(
+            "QLabel\n"
+            "{\n"
+            "    margin-left: 70%;\n"
+            "    margin-right: 70%;\n"
+            "    font-family: Verdana;\n"
+            "    font-size: 19px;\n"
+            "    color: white;\n"
+            "}"
+        )
+        self.howtouse.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.howtouse.setWordWrap(True)
         self.howtouse.setObjectName("howtouse")
         self.verticalLayout_3.addWidget(self.howtouse, 0, QtCore.Qt.AlignBottom)
@@ -135,13 +153,15 @@ class Ui_Dialog(object):
         self.frame = QtWidgets.QFrame(Dialog)
         self.frame.setMinimumSize(QtCore.QSize(680, 370))
         self.frame.setMaximumSize(QtCore.QSize(494, 370))
-        self.frame.setStyleSheet("QFrame\n"
-"{\n"
-"    background-color: #eaeaea;\n"
-"    border-radius: 24px;\n"
-"    margin-left: 50%;\n"
-"    margin-right: 50%;\n"
-"}")
+        self.frame.setStyleSheet(
+            "QFrame\n"
+            "{\n"
+            "    background-color: #eaeaea;\n"
+            "    border-radius: 24px;\n"
+            "    margin-left: 50%;\n"
+            "    margin-right: 50%;\n"
+            "}"
+        )
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setLineWidth(1)
@@ -153,42 +173,50 @@ class Ui_Dialog(object):
         self.input_label = QtWidgets.QLabel(self.frame)
         self.input_label.setMinimumSize(QtCore.QSize(560, 30))
         self.input_label.setMaximumSize(QtCore.QSize(560, 30))
-        self.input_label.setStyleSheet("QLabel\n"
-"{\n"
-"    font-size: 22px;\n"
-"    font-family: Verdana;\n"
-"    margin-left: 30%;\n"
-"    color: #0c2549;\n"
-"}")
+        self.input_label.setStyleSheet(
+            "QLabel\n"
+            "{\n"
+            "    font-size: 22px;\n"
+            "    font-family: Verdana;\n"
+            "    margin-left: 30%;\n"
+            "    color: #0c2549;\n"
+            "}"
+        )
         self.input_label.setWordWrap(False)
         self.input_label.setIndent(0)
         self.input_label.setObjectName("input_label")
         self.verticalLayout_2.addWidget(self.input_label, 0, QtCore.Qt.AlignLeft)
         self.input_layout = QtWidgets.QFormLayout()
         self.input_layout.setRowWrapPolicy(QtWidgets.QFormLayout.DontWrapRows)
-        self.input_layout.setLabelAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
-        self.input_layout.setFormAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.input_layout.setLabelAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+        self.input_layout.setFormAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.input_layout.setContentsMargins(-1, 5, 7, 0)
         self.input_layout.setObjectName("input_layout")
         self.selectppts_edit = QtWidgets.QLineEdit(self.frame)
         self.selectppts_edit.setMinimumSize(QtCore.QSize(380, 50))
         self.selectppts_edit.setMaximumSize(QtCore.QSize(380, 50))
-        self.selectppts_edit.setStyleSheet("QLineEdit\n"
-"{\n"
-"    background-color: transparent;\n"
-"    border-style: solid;\n"
-"    border-color: #0c2549;\n"
-"    border-width: 2px;\n"
-"    color: #0c2549;\n"
-"    font-family: Verdana;\n"
-"    font-size: 19px;\n"
-"    padding-left: 8px;\n"
-"    font-style: Italic;\n"
-"    padding-bottom: 2px;\n"
-"}")
-        self.selectppts_edit.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.selectppts_edit.setStyleSheet(
+            "QLineEdit\n"
+            "{\n"
+            "    background-color: transparent;\n"
+            "    border-style: solid;\n"
+            "    border-color: #0c2549;\n"
+            "    border-width: 2px;\n"
+            "    color: #0c2549;\n"
+            "    font-family: Verdana;\n"
+            "    font-size: 19px;\n"
+            "    padding-left: 8px;\n"
+            "    font-style: Italic;\n"
+            "    padding-bottom: 2px;\n"
+            "}"
+        )
+        self.selectppts_edit.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.selectppts_edit.setObjectName("selectppts_edit")
-        self.input_layout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.selectppts_edit)
+        self.input_layout.setWidget(
+            0, QtWidgets.QFormLayout.LabelRole, self.selectppts_edit
+        )
         self.selectppts_button = QtWidgets.QPushButton(self.frame)
         self.selectppts_button.setEnabled(True)
         self.selectppts_button.setMinimumSize(QtCore.QSize(115, 45))
@@ -201,67 +229,79 @@ class Ui_Dialog(object):
         font.setKerning(True)
         self.selectppts_button.setFont(font)
         self.selectppts_button.setAutoFillBackground(False)
-        self.selectppts_button.setStyleSheet("QPushButton\n"
-"{\n"
-"    margin-top: 4px;\n"
-"    margin-left: 3px;\n"
-"    background-color: #f8c93e;\n"
-"    color: #081e3f;\n"
-"    border: none;\n"
-"    padding-bottom: 1px;\n"
-"    font-size: 17px;\n"
-"}\n"
-"QPushButton:hover\n"
-"{\n"
-"    font-weight: 500;\n"
-"    font-size: 17px;\n"
-"    padding-bottom: 1px;\n"
-"}")
+        self.selectppts_button.setStyleSheet(
+            "QPushButton\n"
+            "{\n"
+            "    margin-top: 4px;\n"
+            "    margin-left: 3px;\n"
+            "    background-color: #f8c93e;\n"
+            "    color: #081e3f;\n"
+            "    border: none;\n"
+            "    padding-bottom: 1px;\n"
+            "    font-size: 17px;\n"
+            "}\n"
+            "QPushButton:hover\n"
+            "{\n"
+            "    font-weight: 500;\n"
+            "    font-size: 17px;\n"
+            "    padding-bottom: 1px;\n"
+            "}"
+        )
         self.selectppts_button.setAutoDefault(True)
         self.selectppts_button.setDefault(False)
         self.selectppts_button.setFlat(False)
         self.selectppts_button.setObjectName("selectppts_button")
         self.selectppts_button.clicked.connect(self.get_folder_path)
-        self.input_layout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.selectppts_button)
+        self.input_layout.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.selectppts_button
+        )
         self.verticalLayout_2.addLayout(self.input_layout)
         self.output_label = QtWidgets.QLabel(self.frame)
         self.output_label.setMinimumSize(QtCore.QSize(560, 30))
         self.output_label.setMaximumSize(QtCore.QSize(560, 30))
-        self.output_label.setStyleSheet("QLabel\n"
-"{\n"
-"    font-size: 22px;\n"
-"    font-family: Verdana;\n"
-"    margin-left: 30%;\n"
-"    color: #0c2549;\n"
-"}")
+        self.output_label.setStyleSheet(
+            "QLabel\n"
+            "{\n"
+            "    font-size: 22px;\n"
+            "    font-family: Verdana;\n"
+            "    margin-left: 30%;\n"
+            "    color: #0c2549;\n"
+            "}"
+        )
         self.output_label.setIndent(0)
         self.output_label.setObjectName("output_label")
         self.verticalLayout_2.addWidget(self.output_label)
         self.output_layout = QtWidgets.QFormLayout()
         self.output_layout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
-        self.output_layout.setLabelAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
-        self.output_layout.setFormAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.output_layout.setLabelAlignment(
+            QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop
+        )
+        self.output_layout.setFormAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
         self.output_layout.setContentsMargins(-1, 5, 7, 0)
         self.output_layout.setVerticalSpacing(6)
         self.output_layout.setObjectName("output_layout")
         self.saveas_edit = QtWidgets.QLineEdit(self.frame)
         self.saveas_edit.setMinimumSize(QtCore.QSize(380, 50))
         self.saveas_edit.setMaximumSize(QtCore.QSize(380, 50))
-        self.saveas_edit.setStyleSheet("QLineEdit\n"
-"{\n"
-"    background-color: transparent;\n"
-"    border-style: solid;\n"
-"    border-color: #0c2549;\n"
-"    border-width: 2px;\n"
-"    color: #0c2549;\n"
-"    font-family: Verdana;\n"
-"    font-size: 19px;\n"
-"    padding-left: 8px;\n"
-"    font-style: Italic;\n"
-"    padding-bottom: 2px;\n"
-"}")
+        self.saveas_edit.setStyleSheet(
+            "QLineEdit\n"
+            "{\n"
+            "    background-color: transparent;\n"
+            "    border-style: solid;\n"
+            "    border-color: #0c2549;\n"
+            "    border-width: 2px;\n"
+            "    color: #0c2549;\n"
+            "    font-family: Verdana;\n"
+            "    font-size: 19px;\n"
+            "    padding-left: 8px;\n"
+            "    font-style: Italic;\n"
+            "    padding-bottom: 2px;\n"
+            "}"
+        )
         self.saveas_edit.setObjectName("saveas_edit")
-        self.output_layout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.saveas_edit)
+        self.output_layout.setWidget(
+            0, QtWidgets.QFormLayout.LabelRole, self.saveas_edit
+        )
         self.saveas_button = QtWidgets.QPushButton(self.frame)
         self.saveas_button.setMinimumSize(QtCore.QSize(115, 45))
         self.saveas_button.setMaximumSize(QtCore.QSize(115, 40))
@@ -273,58 +313,74 @@ class Ui_Dialog(object):
         font.setKerning(True)
         self.saveas_button.setFont(font)
         self.saveas_button.setAutoFillBackground(False)
-        self.saveas_button.setStyleSheet("QPushButton\n"
-"{    \n"
-"    margin-top: 4px;\n"
-"    margin-left: 3px;\n"
-"    background-color: #f8c93e;\n"
-"    color: #081e3f;\n"
-"    border: none;\n"
-"    padding-bottom: 1px;\n"
-"    font-size: 17px;\n"
-"}\n"
-"QPushButton:hover\n"
-"{\n"
-"    font-weight: 500;\n"
-"    font-size: 17px;\n"
-"    padding-bottom: 1px;\n"
-"}")
+        self.saveas_button.setStyleSheet(
+            "QPushButton\n"
+            "{    \n"
+            "    margin-top: 4px;\n"
+            "    margin-left: 3px;\n"
+            "    background-color: #f8c93e;\n"
+            "    color: #081e3f;\n"
+            "    border: none;\n"
+            "    padding-bottom: 1px;\n"
+            "    font-size: 17px;\n"
+            "}\n"
+            "QPushButton:hover\n"
+            "{\n"
+            "    font-weight: 500;\n"
+            "    font-size: 17px;\n"
+            "    padding-bottom: 1px;\n"
+            "}"
+        )
         self.saveas_button.setAutoDefault(True)
         self.saveas_button.setDefault(False)
         self.saveas_button.setFlat(False)
         self.saveas_button.setObjectName("saveas_button")
         self.saveas_button.clicked.connect(self.get_save_location)
-        self.output_layout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.saveas_button)
+        self.output_layout.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.saveas_button
+        )
         self.verticalLayout_2.addLayout(self.output_layout)
         self.createreport_button = QtWidgets.QPushButton(self.frame)
         self.createreport_button.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Maximum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.createreport_button.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.createreport_button.sizePolicy().hasHeightForWidth()
+        )
         self.createreport_button.setSizePolicy(sizePolicy)
         self.createreport_button.setMinimumSize(QtCore.QSize(560, 60))
         self.createreport_button.setMaximumSize(QtCore.QSize(560, 60))
         self.createreport_button.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.createreport_button.setAutoFillBackground(False)
-        self.createreport_button.setStyleSheet("QPushButton\n"
-"{\n"
-"    background-color: #081e3f;\n"
-"    color: white;\n"
-"    font-family: Verdana;\n"
-"    font-size: 25px;\n"
-"    font-weight: bold;\n"
-"    border-radius: 6px;\n"
-"    margin-left: 80%;\n"
-"    margin-right: 80%;\n"
-"}")
+        self.createreport_button.setStyleSheet(
+            "QPushButton\n"
+            "{\n"
+            "    background-color: #081e3f;\n"
+            "    color: white;\n"
+            "    font-family: Verdana;\n"
+            "    font-size: 25px;\n"
+            "    font-weight: bold;\n"
+            "    border-radius: 6px;\n"
+            "    margin-left: 80%;\n"
+            "    margin-right: 80%;\n"
+            "}"
+        )
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/imgs/create-report-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(
+            QtGui.QPixmap(":/imgs/create-report-icon.png"),
+            QtGui.QIcon.Normal,
+            QtGui.QIcon.Off,
+        )
         self.createreport_button.setIcon(icon1)
         self.createreport_button.setIconSize(QtCore.QSize(32, 32))
         self.createreport_button.setObjectName("createreport_button")
         self.createreport_button.clicked.connect(self.create_report)
-        self.verticalLayout_2.addWidget(self.createreport_button, 0, QtCore.Qt.AlignVCenter)
+        self.verticalLayout_2.addWidget(
+            self.createreport_button, 0, QtCore.Qt.AlignVCenter
+        )
         self.input_label.raise_()
         self.createreport_button.raise_()
         self.output_label.raise_()
@@ -335,54 +391,72 @@ class Ui_Dialog(object):
         self.status_label = QtWidgets.QLabel(Dialog)
         self.status_label.setMinimumSize(QtCore.QSize(677, 30))
         self.status_label.setMaximumSize(QtCore.QSize(677, 30))
-        self.status_label.setStyleSheet("QLabel\n"
-"{\n"
-"    color: white;\n"
-"    font-family: Verdana;\n"
-"    font-weight: bold;\n"
-"    font-size: 23px;\n"
-"}")
+        self.status_label.setStyleSheet(
+            "QLabel\n"
+            "{\n"
+            "    color: white;\n"
+            "    font-family: Verdana;\n"
+            "    font-weight: bold;\n"
+            "    font-size: 23px;\n"
+            "}"
+        )
         self.status_label.setAlignment(QtCore.Qt.AlignCenter)
         self.status_label.setObjectName("status_label")
-        self.status_layout.addWidget(self.status_label, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+        self.status_layout.addWidget(
+            self.status_label, 0, QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter
+        )
         self.processed_edit = QtWidgets.QLineEdit(Dialog)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.processed_edit.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.processed_edit.sizePolicy().hasHeightForWidth()
+        )
         self.processed_edit.setSizePolicy(sizePolicy)
         self.processed_edit.setMinimumSize(QtCore.QSize(677, 45))
         self.processed_edit.setMaximumSize(QtCore.QSize(677, 45))
-        self.processed_edit.setStyleSheet("QLineEdit\n"
-"{\n"
-"    background-color: transparent;\n"
-"    border-style: solid;\n"
-"    border-color: white;\n"
-"    border-width: 1px;\n"
-"    color: white;\n"
-"    font-family: Verdana;\n"
-"    font-size: 21px;\n"
-"    padding-left: 4px;\n"
-"    padding-bottom: 2px;\n"
-"    margin-left: 75%;\n"
-"    margin-right: 75%;\n"
-"}")
-        self.processed_edit.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.processed_edit.setStyleSheet(
+            "QLineEdit\n"
+            "{\n"
+            "    background-color: transparent;\n"
+            "    border-style: solid;\n"
+            "    border-color: white;\n"
+            "    border-width: 1px;\n"
+            "    color: white;\n"
+            "    font-family: Verdana;\n"
+            "    font-size: 21px;\n"
+            "    padding-left: 4px;\n"
+            "    padding-bottom: 2px;\n"
+            "    margin-left: 75%;\n"
+            "    margin-right: 75%;\n"
+            "}"
+        )
+        self.processed_edit.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        )
         self.processed_edit.setObjectName("processed_edit")
-        self.status_layout.addWidget(self.processed_edit, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+        self.status_layout.addWidget(
+            self.processed_edit, 0, QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter
+        )
         self.credit_label = QtWidgets.QLabel(Dialog)
         self.credit_label.setMinimumSize(QtCore.QSize(677, 30))
         self.credit_label.setMaximumSize(QtCore.QSize(677, 30))
-        self.credit_label.setStyleSheet("QLabel\n"
-"{\n"
-"    color: white;\n"
-"    font-family: Verdana;\n"
-"    font-style: Italic;\n"
-"    font-size: 20px;\n"
-"}")
+        self.credit_label.setStyleSheet(
+            "QLabel\n"
+            "{\n"
+            "    color: white;\n"
+            "    font-family: Verdana;\n"
+            "    font-style: Italic;\n"
+            "    font-size: 20px;\n"
+            "}"
+        )
         self.credit_label.setAlignment(QtCore.Qt.AlignCenter)
         self.credit_label.setObjectName("credit_label")
-        self.status_layout.addWidget(self.credit_label, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignBottom)
+        self.status_layout.addWidget(
+            self.credit_label, 0, QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom
+        )
         self.verticalLayout_4.addLayout(self.status_layout)
         self.verticalLayout_6.addLayout(self.verticalLayout_4)
 
@@ -394,24 +468,37 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "EZ Accessibility"))
         self.check_for_updates.setText(_translate("Dialog", "Check for Updates"))
         self.label.setText(_translate("Dialog", "How to use:"))
-        self.howtouse.setText(_translate("Dialog", "EZ Accessibility is a tool that compiles inaccessible PowerPoint images into a tabular .docx report. Please select a folder containing .pptx files and a location to save the report."))
+        self.howtouse.setText(
+            _translate(
+                "Dialog",
+                "EZ Accessibility is a tool that compiles inaccessible PowerPoint images into a tabular .docx report. Please select a folder containing .pptx files and a location to save the report.",
+            )
+        )
         self.input_label.setText(_translate("Dialog", "Input:"))
-        self.selectppts_edit.setText(_translate("Dialog", "Folder containing .pptx files..."))
+        self.selectppts_edit.setText(
+            _translate("Dialog", "Folder containing .pptx files...")
+        )
         self.selectppts_button.setText(_translate("Dialog", "SELECT"))
         self.output_label.setText(_translate("Dialog", "Output:"))
         self.saveas_edit.setText(_translate("Dialog", "Save report to this folder..."))
         self.saveas_button.setText(_translate("Dialog", "SELECT"))
         self.createreport_button.setText(_translate("Dialog", "CREATE REPORT"))
-        self.status_label.setText(_translate("Dialog", "STATUS: Awaiting File Selection"))
+        self.status_label.setText(
+            _translate("Dialog", "STATUS: Awaiting File Selection")
+        )
         self.processed_edit.setText(_translate("Dialog", "Processed: "))
         self.credit_label.setText(_translate("Dialog", "Developed by Mateo Aguirre"))
 
     def get_folder_path(self):
-        pptxpath = QFileDialog.getExistingDirectory(None, "Select Folder", expanduser("~"), QFileDialog.ShowDirsOnly)
+        pptxpath = QFileDialog.getExistingDirectory(
+            None, "Select Folder", expanduser("~"), QFileDialog.ShowDirsOnly
+        )
         self.selectppts_edit.setText(pptxpath)
         self.folder_path = str(pptxpath)
         if self.folder_path != "":
-            if not any(fname.endswith('.pptx') for fname in os.listdir(self.folder_path)):
+            if not any(
+                fname.endswith(".pptx") for fname in os.listdir(self.folder_path)
+            ):
                 self.status_label.setText("STATUS: No .pptx files found")
                 QApplication.processEvents()
             else:
@@ -419,12 +506,21 @@ class Ui_Dialog(object):
                 QApplication.processEvents()
 
     def get_save_location(self):
-        savepath, _ = QFileDialog.getSaveFileName(None, "Save file", expanduser("~"), "MS Word (*.docx)", options=QFileDialog.Options())
+        savepath, _ = QFileDialog.getSaveFileName(
+            None,
+            "Save file",
+            expanduser("~"),
+            "MS Word (*.docx)",
+            options=QFileDialog.Options(),
+        )
         self.save_path = str(savepath)
         self.saveas_edit.setText(savepath)
 
     def create_report(self):
-        if self.selectppts_edit.text() == "Folder containing .pptx files..." and self.saveas_edit.text() == "Save .docx report to...":
+        if (
+            self.selectppts_edit.text() == "Folder containing .pptx files..."
+            and self.saveas_edit.text() == "Save .docx report to..."
+        ):
             self.status_label.setText("ERROR: No inputs/output found!")
             QApplication.processEvents()
         elif self.selectppts_edit.text() == "Folder containing .pptx files...":
@@ -461,20 +557,24 @@ class Ui_Dialog(object):
             status_label.setText("STATUS: Report Created")
             self.processed_edit.setText("Processing: ")
             icon2 = QtGui.QIcon()
-            icon2.addPixmap(QtGui.QPixmap("removed-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon2.addPixmap(
+                QtGui.QPixmap("removed-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+            )
             self.createreport_button.setIcon(icon2)
             self.createreport_button.setText("RESTART EZ-A TO CONTINUE")
-            self.createreport_button.setStyleSheet("QPushButton\n"
-    "{\n"
-    "    background-color: #081e3f;\n"
-    "    color: white;\n"
-    "    font-family: Verdana;\n"
-    "    font-size: 20px;\n"
-    "    font-weight: bold;\n"
-    "    border-radius: 6px;\n"
-    "    margin-left: 80%;\n"
-    "    margin-right: 80%;\n"
-    "}")
+            self.createreport_button.setStyleSheet(
+                "QPushButton\n"
+                "{\n"
+                "    background-color: #081e3f;\n"
+                "    color: white;\n"
+                "    font-family: Verdana;\n"
+                "    font-size: 20px;\n"
+                "    font-weight: bold;\n"
+                "    border-radius: 6px;\n"
+                "    margin-left: 80%;\n"
+                "    margin-right: 80%;\n"
+                "}"
+            )
             QApplication.processEvents()
 
         else:
@@ -486,16 +586,16 @@ class Ui_Dialog(object):
         QApplication.processEvents()
 
 
-
 import eza_imgs
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
     Dialog.setWindowTitle("EZ Accessibility")
-    Dialog.setWindowIcon(QtGui.QIcon('eza.ico'))
+    Dialog.setWindowIcon(QtGui.QIcon("eza.ico"))
     Dialog.show()
     sys.exit(app.exec_())

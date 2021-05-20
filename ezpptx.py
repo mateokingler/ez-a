@@ -1,5 +1,6 @@
 import ezagui
 import sys
+
 sys.dont_write_bytecode = True
 import os
 import shutil
@@ -22,7 +23,9 @@ pptxfldr = ""
 
 _nsmap["adec"] = "http://schemas.microsoft.com/office/drawing/2017/decorative"
 document = Document()
-document.add_heading('Accessibility Report', 0)
+document.add_heading("Accessibility Report", 0)
+
+
 def create_report_doc(pptxfldr):
     pptxfldr = pptxfldr
     sections = document.sections
@@ -31,6 +34,7 @@ def create_report_doc(pptxfldr):
         section.bottom_margin = Cm(0.5)
         section.left_margin = Cm(1.2)
         section.right_margin = Cm(1)
+
 
 n = 0
 d = 0
@@ -41,6 +45,7 @@ group_img_paths = ""
 grptxt = ""
 group_text = []
 auto_desc_txts = []
+
 
 def extract_group_txt(groupshape, grptxt):
     grptxt = ""
@@ -54,6 +59,7 @@ def extract_group_txt(groupshape, grptxt):
                 grptxt += ""
     return grptxt
 
+
 def extract_group_img(groupshape, group_img_paths, pptxfldr):
     global d
     group_img_paths = ""
@@ -64,14 +70,15 @@ def extract_group_img(groupshape, group_img_paths, pptxfldr):
             if hasattr(shape, "image"):
                 image = shape.image
                 image_bytes = image.blob
-                image_filename = 'group{:04d}.{}'.format(d, image.ext)
+                image_filename = "group{:04d}.{}".format(d, image.ext)
                 group_img_paths += image_filename + " "
                 d += 1
-                with open(pptxfldr + "/tmp/" + image_filename, 'wb') as f:
+                with open(pptxfldr + "/tmp/" + image_filename, "wb") as f:
                     f.write(image_bytes)
             else:
                 group_img_paths += ""
     return group_img_paths
+
 
 def extract_shape(shape, pptxfldr):
     global n
@@ -88,10 +95,10 @@ def extract_shape(shape, pptxfldr):
         group_text.append("")
         image = shape.image
         image_bytes = image.blob
-        image_filename = 'image{:04d}.{}'.format(n, image.ext)
+        image_filename = "image{:04d}.{}".format(n, image.ext)
         img_paths.append(image_filename)
         n += 1
-        with open(pptxfldr + "/tmp/" + image_filename, 'wb') as f:
+        with open(pptxfldr + "/tmp/" + image_filename, "wb") as f:
             f.write(image_bytes)
     else:
         group_text.append("")
@@ -126,11 +133,13 @@ def valid_shape_type(shape):
     else:
         return False
 
+
 def is_decorative(shape):
     cNvPr = shape._element._nvXxPr.cNvPr
     adec_decoratives = cNvPr.xpath(".//adec:decorative[@val='1']")
     if adec_decoratives:
         return True
+
 
 # Remove unnecessary elses (if applicable), check if you can use None instead of 0
 def has_alt_text(shape):
@@ -144,16 +153,18 @@ def has_alt_text(shape):
     else:
         auto_desc_txts.append("")
 
+
 def keep_table_on_one_page(document):
     """https://github.com/python-openxml/python-docx/issues/245#event-621236139
-       Globally prevent table cells from splitting across pages.
+    Globally prevent table cells from splitting across pages.
     """
-    tags = document.element.xpath('//w:tr')
+    tags = document.element.xpath("//w:tr")
     rows = len(tags)
     for row in range(0, rows):
         tag = tags[row]  # Specify which <w:r> tag you want
-        child = OxmlElement('w:cantSplit')  # Create arbitrary tag
+        child = OxmlElement("w:cantSplit")  # Create arbitrary tag
         tag.append(child)  # Append in the new tag
+
 
 def create_docx_table(filename, pptxfldr):
     f = document.add_paragraph()
@@ -161,63 +172,64 @@ def create_docx_table(filename, pptxfldr):
     r = f.add_run(filename)
     r.bold = True
     font = r.font
-    font.name = 'Malgun Gothic'
+    font.name = "Malgun Gothic"
     font.size = Pt(19)
     font = d.font
-    font.name = 'Malgun Gothic'
+    font.name = "Malgun Gothic"
     font.size = Pt(19)
     f.alignment = WD_ALIGN_PARAGRAPH.LEFT
     table = document.add_table(rows=1, cols=4, style="Light Grid Accent 1")
     hdr_cells = table.rows[0].cells
     p = hdr_cells[0].paragraphs[0]
-    r = p.add_run(style = None)
+    r = p.add_run(style=None)
     font = r.font
-    font.name = 'Malgun Gothic'
+    font.name = "Malgun Gothic"
     font.size = Pt(11)
-    r.add_text('Figure Name')
+    r.add_text("Figure Name")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = hdr_cells[1].paragraphs[0]
-    r = p.add_run(style = None)
+    r = p.add_run(style=None)
     font = r.font
-    font.name = 'Malgun Gothic'
+    font.name = "Malgun Gothic"
     font.size = Pt(10)
-    r.add_text('Slide Number')
+    r.add_text("Slide Number")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = hdr_cells[2].paragraphs[0]
-    r = p.add_run(style = None)
+    r = p.add_run(style=None)
     font = r.font
-    font.name = 'Malgun Gothic'
+    font.name = "Malgun Gothic"
     font.size = Pt(11)
-    r.add_text('Figure Image/Text')
+    r.add_text("Figure Image/Text")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = hdr_cells[3].paragraphs[0]
-    r = p.add_run(style = None)
+    r = p.add_run(style=None)
     font = r.font
-    font.name = 'Malgun Gothic'
+    font.name = "Malgun Gothic"
     font.size = Pt(11)
-    r.add_text('Alt-Text')
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER 
+    r.add_text("Alt-Text")
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    for (img_name, sldnum, img_path, grouptext, auto_desc_txt) in zip(img_names, sldnums, img_paths, group_text, auto_desc_txts):
+    for (img_name, sldnum, img_path, grouptext, auto_desc_txt) in zip(
+        img_names, sldnums, img_paths, group_text, auto_desc_txts):
         row_cells = table.add_row().cells
         p = row_cells[0].paragraphs[0]
-        r = p.add_run(style = None)
+        r = p.add_run(style=None)
         r.add_text(img_name)
         font = r.font
-        font.name = 'Malgun Gothic'
+        font.name = "Malgun Gothic"
         font.size = Pt(12.5)
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         row_cells[0].vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         p = row_cells[1].paragraphs[0]
-        r = p.add_run(style = None)
+        r = p.add_run(style=None)
         r.add_text(str(sldnum))
         font = r.font
-        font.name = 'Malgun Gothic'
+        font.name = "Malgun Gothic"
         font.size = Pt(16)
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         row_cells[1].vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         p = row_cells[2].paragraphs[0]
-        r = p.add_run(style = None)
+        r = p.add_run(style=None)
         sngle_path = img_path.split(" ")
         for path in sngle_path:
             if path != "":
@@ -227,9 +239,9 @@ def create_docx_table(filename, pptxfldr):
                     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             else:
                 r.add_break()
-                r.add_text('Figure type not supported')
+                r.add_text("Figure type not supported")
                 r.add_break()
-                r.add_text('Please insert manually!')
+                r.add_text("Please insert manually!")
                 r.add_break()
                 r.bold = True
                 font = r.font
@@ -239,16 +251,16 @@ def create_docx_table(filename, pptxfldr):
         if grouptext != "":
             r.add_break()
             font = r.font
-            font.name = 'Malgun Gothic'
+            font.name = "Malgun Gothic"
             font.size = Pt(9)
             r.add_text(grouptext)
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             row_cells[2].vertical_alignment = WD_ALIGN_VERTICAL.CENTER
 
         p = row_cells[3].paragraphs[0]
-        r = p.add_run(style = None)
+        r = p.add_run(style=None)
         font = r.font
-        font.name = 'Malgun Gothic'
+        font.name = "Malgun Gothic"
         font.size = Pt(8)
         r.add_text(auto_desc_txt)
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -258,7 +270,6 @@ def create_docx_table(filename, pptxfldr):
             p = cells.paragraphs[0]
             p.style = None
 
-
     widths = (Inches(1.3), Inches(1.1), Inches(2.9), Inches(2.4))
     for row in table.rows:
         for idx, width in enumerate(widths):
@@ -266,10 +277,15 @@ def create_docx_table(filename, pptxfldr):
 
     document.add_page_break()
 
+
 def check_file_accessibility(prs, pptxfldr):
     for slide in prs.slides:
         for shape in slide.shapes:
-            if valid_shape_type(shape) and not is_decorative(shape) and not has_alt_text(shape):
+            if (
+                valid_shape_type(shape)
+                and not is_decorative(shape)
+                and not has_alt_text(shape)
+            ):
                 extract_shape(shape, pptxfldr)
                 yield shape
                 img_names.append(shape.name)
@@ -277,12 +293,15 @@ def check_file_accessibility(prs, pptxfldr):
                 sldnums.append(str(sldnum))
                 n = 0
 
+
 def iter_files(pptxfldr, update_status):
     for filename in os.listdir(pptxfldr):
         if filename.endswith(".pptx"):
             filename = filename.replace("~$", "")
             update_status(filename)
-            for picture in check_file_accessibility(Presentation(pptxfldr + "/" + filename), pptxfldr):
+            for picture in check_file_accessibility(
+                Presentation(pptxfldr + "/" + filename), pptxfldr
+            ):
                 continue
             pptxfldr = pptxfldr
             print(img_names)
@@ -300,6 +319,7 @@ def iter_files(pptxfldr, update_status):
             print(sldnums)
             print(img_paths)
             print(img_names)
+
 
 def save_report(pptxfldr, savepath):
     keep_table_on_one_page(document)

@@ -89,7 +89,6 @@ def extract_shape(shape, pptxfldr):
         grptxt = extract_group_txt(shape.shapes, grptxt)
         group_text.append(grptxt)
         img_paths.append(group_img_paths)
-        n += 1
 
     elif shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
         group_text.append("")
@@ -97,13 +96,13 @@ def extract_shape(shape, pptxfldr):
         image_bytes = image.blob
         image_filename = "image{:04d}.{}".format(n, image.ext)
         img_paths.append(image_filename)
-        n += 1
         with open(pptxfldr + "/tmp/" + image_filename, "wb") as f:
             f.write(image_bytes)
     else:
         group_text.append("")
         img_paths.append("")
-        n += 1
+    
+    n += 1 
 
 
 # Function obsolete, implement into extract_shape
@@ -111,11 +110,6 @@ def valid_shape_type(shape):
     if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
         if ".jpg" or ".png" in picture.name:
             return True
-        else:
-            return False
-    elif shape.shape_type == MSO_SHAPE_TYPE.PLACEHOLDER:
-        if shape.placeholder_format.type == PP_PLACEHOLDER.OBJECT:
-            return False
         else:
             return False
     elif shape.shape_type == MSO_SHAPE_TYPE.GROUP:
@@ -160,7 +154,7 @@ def keep_table_on_one_page(document):
     """
     tags = document.element.xpath("//w:tr")
     rows = len(tags)
-    for row in range(0, rows):
+    for row in range(rows):
         tag = tags[row]  # Specify which <w:r> tag you want
         child = OxmlElement("w:cantSplit")  # Create arbitrary tag
         tag.append(child)  # Append in the new tag

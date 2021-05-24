@@ -64,23 +64,14 @@ Follow the instructions below to run EZ-A from source, on your own fork.
 
 ### Prerequisites
 Use the Python package manager pip to install the prerequisites.
-* python-pptx
+
   ```sh
   pip install python-pptx
-  ```
-* python-docx
-  ```sh
   pip install python-docx
-  ```
-* pyinstaller
-  ```sh
   pip install pyinstaller
-  ```
-* PyQt5
-  ```sh
   pip install PyQt5
   ```
-
+  
 ### Compiling
 
 In the projects root directory, package the executable using the SPEC file

@@ -24,6 +24,9 @@ pptxfldr = ""
 _nsmap["adec"] = "http://schemas.microsoft.com/office/drawing/2017/decorative"
 document = Document()
 document.add_heading("Accessibility Report", 0)
+core_properties = document.core_properties
+core_properties.comments = 'Report generated using EZ-A'
+core_properties.author = ''
 
 
 def create_report_doc(pptxfldr):
